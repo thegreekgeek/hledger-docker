@@ -6,8 +6,7 @@ ENV RESOLVER=nightly-2025-12-04 \
 
 RUN ghc --version
 RUN stack setup --resolver=$RESOLVER 
-RUN apt-get update && apt-get install -y --no-install-recommends git rustc cargo python3-pip python3-venv && apt-get clean && rm -rf /var/lib/apt/lists
-RUN cargo install just
+RUN apt-get update && apt-get install -y --no-install-recommends git python3-pip python3-venv && apt-get clean && rm -rf /var/lib/apt/lists
 #RUN stack install --resolver=$RESOLVER base-compat-0.14.0
 #RUN stack install --resolver=$RESOLVER microlens-platform-0.4.3.5 hashable-1.4.7.0 hledger-lib-1.43 hledger-1.43 hledger-ui-1.43 hledger-web-1.43
 WORKDIR /build

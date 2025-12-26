@@ -7,6 +7,19 @@ ENV RESOLVER=nightly-2025-12-04 \
 RUN ghc --version
 RUN stack setup --resolver=$RESOLVER 
 RUN apt-get update && apt-get install -y --no-install-recommends git python3-pip python3-venv && apt-get clean && rm -rf /var/lib/apt/lists
+ARG JUST_VERSION=1.45.0
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      ca-certificates \
+      curl \
+ && curl -fsSL \
+      https://github.com/casey/just/releases/download/${JUST_VERSION}/just-${JUST_VERSION}-x86_64-unknown-linux-musl.tar.gz \
+    | tar -xz -C /usr/local/bin just \
+ && chmod +x /usr/local/bin/just \
+ && apt-get purge -y curl \
+ && apt-get autoremove -y \
+ && rm -rf /var/lib/apt/lists/*
 #RUN stack install --resolver=$RESOLVER base-compat-0.14.0
 #RUN stack install --resolver=$RESOLVER microlens-platform-0.4.3.5 hashable-1.4.7.0 hledger-lib-1.43 hledger-1.43 hledger-ui-1.43 hledger-web-1.43
 WORKDIR /build

@@ -58,6 +58,7 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 COPY --from=dev /root/.local/bin/hledger* /usr/bin/
 COPY --from=dev /usr/app/venv /usr/app/venv
+COPY --from=dev /usr/local/bin/just /usr/local/bin/just
 
 ENV PATH="/usr/app/venv/bin:$PATH" \
     LC_ALL=C.UTF-8

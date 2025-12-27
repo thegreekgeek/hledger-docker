@@ -13,11 +13,11 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       ca-certificates \
       curl \
+      jq  \
  && curl -fsSL \
       https://github.com/casey/just/releases/download/${JUST_VERSION}/just-${JUST_VERSION}-x86_64-unknown-linux-musl.tar.gz \
     | tar -xz -C /usr/local/bin just \
  && chmod +x /usr/local/bin/just \
- && apt-get purge -y curl \
  && apt-get autoremove -y \
  && rm -rf /var/lib/apt/lists/*
 #RUN stack install --resolver=$RESOLVER base-compat-0.14.0

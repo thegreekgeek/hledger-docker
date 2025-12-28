@@ -62,8 +62,11 @@ COPY --from=dev /usr/local/bin/just /usr/local/bin/just
 
 ENV PATH="/usr/app/venv/bin:$PATH" \
     LC_ALL=C.UTF-8
+    
+COPY --chown=hledger:root data /data
 
-COPY data /data
+RUN chown hledger:root /data
+
 VOLUME /data
 
 EXPOSE 5000 5001

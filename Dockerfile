@@ -60,7 +60,7 @@ COPY --from=dev /root/.local/bin/hledger* /usr/bin/
 COPY --from=dev /usr/app/venv /usr/app/venv
 COPY --from=dev /usr/local/bin/just /usr/local/bin/just
 
-RUN python3 -m venv --upgrade /usr/app/venv
+RUN ln -sf /usr/bin/python3 /usr/app/venv/bin/python3
 
 ENV PATH="/usr/app/venv/bin:$PATH" \
     LC_ALL=C.UTF-8

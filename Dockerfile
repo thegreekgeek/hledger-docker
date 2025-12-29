@@ -52,13 +52,15 @@ FROM debian:bookworm-slim
 
 MAINTAINER Dmitry Astapov <dastapov@gmail.com>
 
-RUN apt-get update && apt-get install --yes --no-install-recommends libgmp10 libtinfo6 sudo less jq curl python3 && apt-get clean && rm -rf /var/lib/apt/lists
+RUN apt-get update && apt-get install --yes --no-install-recommends libgmp10 libtinfo6 sudo less jq curl python3 python3-venv python3-pip && apt-get clean && rm -rf /var/lib/apt/lists
 RUN adduser --system --ingroup root hledger && usermod -aG sudo hledger && mkdir /.cache && chmod 0777 /.cache
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 COPY --from=dev /root/.local/bin/hledger* /usr/bin/
 COPY --from=dev /usr/app/venv /usr/app/venv
 COPY --from=dev /usr/local/bin/just /usr/local/bin/just
+
+RUN python3 -m venv --upgrade /usr/app/venv
 
 ENV PATH="/usr/app/venv/bin:$PATH" \
     LC_ALL=C.UTF-8

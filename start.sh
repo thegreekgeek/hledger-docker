@@ -29,8 +29,9 @@ elif [ -f "$GEN_SCRIPT" ]; then
 fi
 
 echo "Starting static report server on port $REPORT_PORT..."
-python3 -m http.server "$REPORT_PORT" --directory "$REPORT_DIR" &
+python3 -m http.server "$REPORT_PORT" --directory "$REPORT_DIR" --bind 0.0.0.0 > /data/report_server.log 2>&1 &
 HTTP_PID=$!
+echo "Static report server started with PID $HTTP_PID. Logs at /data/report_server.log"
 
 # Trap signals to kill the background process
 trap "kill $HTTP_PID" EXIT

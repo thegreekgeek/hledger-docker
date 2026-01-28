@@ -10,6 +10,31 @@ echo "allow:        ${HLEDGER_ALLOW:=add}"
 echo "extra_args:   ${HLEDGER_ARGS:=$@}"
 echo "---------------------------------------------------------------"
 
+# Sidecar: Static Reporting
+REPORT_DIR="/data/reports"
+REPORT_PORT=5001
+
+if [ ! -d "$REPORT_DIR" ]; then
+    echo "Creating report directory: $REPORT_DIR"
+    mkdir -p "$REPORT_DIR"
+fi
+
+# Optional: Generate reports on startup
+GEN_SCRIPT="/data/generate_reports.sh"
+if [ -f "$GEN_SCRIPT" ] && [ -x "$GEN_SCRIPT" ]; then
+    echo "Executing report generation script: $GEN_SCRIPT"
+    "$GEN_SCRIPT" || echo "Warning: Report generation script failed."
+elif [ -f "$GEN_SCRIPT" ]; then
+    echo "Warning: Found $GEN_SCRIPT but it is not executable."
+fi
+
+echo "Starting static report server on port $REPORT_PORT..."
+python3 -m http.server "$REPORT_PORT" --directory "$REPORT_DIR" &
+HTTP_PID=$!
+
+# Trap signals to kill the background process
+trap "kill $HTTP_PID" EXIT
+
 exec hledger-web \
      --server \
      --host=$HLEDGER_HOST \

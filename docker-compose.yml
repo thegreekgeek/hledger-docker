@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
     hledger-dockerized:
-        image: forgejo.tailacbd65.ts.net/rob/hledger-docker:latest
+        image: forgejo.tailacbd65.ts.net/rob/hledger-docker:b97f30e
         hostname: ${STACK_NAME}
         environment:
             -   HLEDGER_JOURNAL_FILE=${HLEDGER_JOURNAL_FILE:-/data/main.journal}

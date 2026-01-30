@@ -41,6 +41,7 @@ services:
             - caddy_config:/config
         networks:
             - hledger_net
+            - tsdproxy_default
 
 volumes:
     caddy_data:
@@ -48,3 +49,5 @@ volumes:
 
 networks:
     hledger_net:
+    tsdproxy_default:
+        external: true

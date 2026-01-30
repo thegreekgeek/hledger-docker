@@ -6,13 +6,13 @@ echo "base url:     ${HLEDGER_BASE_URL:="http://localhost:$HLEDGER_PORT"}"
 echo "input file:   ${HLEDGER_JOURNAL_FILE:=/data/hledger.journal}"
 echo "debug level:  ${HLEDGER_DEBUG:=1}"
 echo "rules file:   ${HLEDGER_RULES_FILE:=/data/hledger.rules}"
-echo "report dir:   ${HLEDGER_REPORT_DIR:=/data/reports}"
+echo "report dir:   ${HLEDGER_REPORT_DIR:=/data/exports}"
 echo "allow:        ${HLEDGER_ALLOW:=add}"
 echo "extra_args:   ${HLEDGER_ARGS:=$@}"
 echo "---------------------------------------------------------------"
 
 # Sidecar: Static Reporting
-REPORT_DIR="${HLEDGER_REPORT_DIR:=/data/reports}"
+REPORT_DIR="${HLEDGER_REPORT_DIR:=/data/exports}"
 REPORT_PORT=5001
 
 if [ ! -d "$REPORT_DIR" ]; then

@@ -1,15 +1,49 @@
 version: '2.1'
+
 services:
     hledger-dockerized:
         image: dastapov/hledger
         environment:
-            -   HLEDGER_JOURNAL_FILE=/data/all.journal
-                # if behind reverse proxy, set base url
-            -   # HLEDGER_BASE_URL=https://hledger.example.com
-        ports:
-            -   5000:5000
-            -   5001:5001
+            -   HLEDGER_JOURNAL_FILE=${HLEDGER_JOURNAL_FILE:-/data/all.journal}
+            -   HLEDGER_BASE_URL=${HLEDGER_BASE_URL:-http://localhost}
+            -   HLEDGER_HOST=${HLEDGER_HOST:-0.0.0.0}
+            -   HLEDGER_PORT=${HLEDGER_PORT:-5000}
+            -   HLEDGER_DEBUG=${HLEDGER_DEBUG:-1}
+            -   HLEDGER_RULES_FILE=${HLEDGER_RULES_FILE:-/data/hledger.rules}
+            -   HLEDGER_REPORT_DIR=${HLEDGER_REPORT_DIR:-/data/export}
+            -   HLEDGER_ALLOW=${HLEDGER_ALLOW:-add}
+            -   HLEDGER_ARGS=${HLEDGER_ARGS}
+        expose:
+            - "5000"
+            - "5001"
         restart: always
         user: "0" # evaluate echo "$(id -u)" and copy here
         volumes:
             -   ${HOME}/journals:/data
+        networks:
+            - hledger_net
+
+    caddy:
+        image: caddy:2-alpine
+        restart: unless-stopped
+        labels:
+            tsdproxy.enable: "true"
+            tsdproxy.name: "${STACK_NAME}"
+            tsdproxy.funnel: "false"
+            tsdproxy.authkey: "${TSAUTHKEY}"
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./Caddyfile:/etc/caddy/Caddyfile
+            - caddy_data:/data
+            - caddy_config:/config
+        networks:
+            - hledger_net
+
+volumes:
+    caddy_data:
+    caddy_config:
+
+networks:
+    hledger_net:

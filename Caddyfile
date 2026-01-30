@@ -1,0 +1,11 @@
+:80 {
+    # Proxy requests to /reports/ to the static file server on port 5001
+    handle_path /reports/* {
+        reverse_proxy hledger-dockerized:5001
+    }
+
+    # Proxy all other requests to the main hledger-web app on port 5000
+    handle /* {
+        reverse_proxy hledger-dockerized:5000
+    }
+}

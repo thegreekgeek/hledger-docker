@@ -3,6 +3,7 @@ version: '2.1'
 services:
     hledger-dockerized:
         image: dastapov/hledger
+        hostname: ${STACK_NAME}
         environment:
             -   HLEDGER_JOURNAL_FILE=${HLEDGER_JOURNAL_FILE:-/data/all.journal}
             -   HLEDGER_BASE_URL=${HLEDGER_BASE_URL:-http://localhost}
@@ -19,7 +20,7 @@ services:
         restart: always
         user: "0" # evaluate echo "$(id -u)" and copy here
         volumes:
-            -   ${HOME}/journals:/data
+            -   /vmdata/finance:/data
         networks:
             - hledger_net
 

@@ -5,7 +5,7 @@ services:
         image: dastapov/hledger
         hostname: ${STACK_NAME}
         environment:
-            -   HLEDGER_JOURNAL_FILE=${HLEDGER_JOURNAL_FILE:-/data/all.journal}
+            -   HLEDGER_JOURNAL_FILE=${HLEDGER_JOURNAL_FILE:-/data/main.journal}
             -   HLEDGER_BASE_URL=${HLEDGER_BASE_URL:-http://localhost}
             -   HLEDGER_HOST=${HLEDGER_HOST:-0.0.0.0}
             -   HLEDGER_PORT=${HLEDGER_PORT:-5000}
